@@ -5,23 +5,30 @@
 #                                                     +:+ +:+         +:+      #
 #    By: eakman <eakman@student.42kocaeli.com.tr    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/07/24 16:24:17 by eakman            #+#    #+#              #
-#    Updated: 2023/07/24 18:23:16 by eakman           ###   ########.fr        #
+#    Created: 2023/07/31 13:42:59 by eakman            #+#    #+#              #
+#    Updated: 2023/07/31 20:56:04 by eakman           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = libftprintf.a
-FLAG = -Wall -Wextra -Werror
-SRC = ft_printf.c ft_printf_fct.c ft_printf_fctt.c \
+NAME		=	libftprintf.a
+CFLAGS		=	-Wall -Werror -Wextra
+SRC			=	ft_printf.c ft_printf_utils.c 
+CC			=	gcc
+AR			=	ar rcs
+RM			=	rm -rf
+OBJ			=	$(SRC:.c=.o)
 
-all: $(NAME)
+all:$(NAME)
 
-$(NAME):
-	gcc $(FLAG) -c $(SRC)
-	ar rc $(NAME) *.o
+$(NAME):$(OBJ)
+	$(AR) $(NAME) $(OBJ)
+
 clean:
-	rm -f  *.o
-fclean: clean
-	rm -f $(NAME)
+	$(RM) $(OBJ)
 
-re: fclean all
+fclean:	clean
+	$(RM) $(NAME)
+
+re:	fclean all
+
+.PHONY:	all clean fclean re

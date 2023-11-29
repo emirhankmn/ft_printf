@@ -5,81 +5,67 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: eakman <eakman@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/24 18:11:53 by eakman            #+#    #+#             */
-/*   Updated: 2023/07/24 23:56:49 by eakman           ###   ########.fr       */
+/*   Created: 2023/07/31 13:40:50 by eakman            #+#    #+#             */
+/*   Updated: 2023/07/31 20:57:25 by eakman           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_putchar(char a)
+int	ft_putchar(char c)
 {
-	return(write(1, &a, 1));
+	return (write(1, &c, 1));
 }
 
-int	ft_format(va_list arg, char c)
+int	ft_format(va_list *args, char a)
 {
-	if (c == 'c')
-		return (ft_putchar(va_arg((arg), int)));
-	else if (c == 's')
-		return (ft_string(va_arg((arg), char *)));
-	else if (c == 'p')
-		return (ft_point(va_arg((arg), unsigned long), 1));
-	else if (c == 'd' || c == 'i')
-		return (ft_int(va_arg((arg), int)));
-	else if (c == 'u')
-		return (ft_unsigned(va_arg((arg), unsigned int)));
-	else if (c == 'x' || c == 'X')
-		return (ft_hex(va_arg((arg), unsigned int), c));
+	if (a == 'c')
+		return (ft_putchar(va_arg((*args), int)));
+	else if (a == 'd' || a == 'i')
+		return (ft_int(va_arg((*args), int)));
+	else if (a == 'u')
+		return (ft_unsigned(va_arg((*args), unsigned int)));
+	else if (a == 's')
+		return (ft_string(va_arg((*args), char *)));
+	else if (a == 'X' || a == 'x')
+		return (ft_hex(va_arg((*args), unsigned int), a));
+	else if (a == 'p')
+		return (ft_point(va_arg((*args), unsigned long), 1));
 	else
 		return (ft_putchar('%'));
 }
 
-bool	ft_flag_catch(const char *str, int i)
+int	ft_check(char str)
 {
-	return (str[i] == '%' && (str[i + 1] == 'c' || str[i + 1] == 'd'
-			|| str[i + 1] == 'i' || str[i + 1] == 'u'
-			|| str[i + 1] == 'x' || str[i + 1] == 'X'
-			|| str[i + 1] == 'p' || str[i + 1] == 's' || str[i + 1] == '%'));
+	if (str == 'c' || str == 'd' || str == 'i' || str == 'u' || str == '%'
+		|| str == 's' || str == 'x' || str == 'X' || str == 'p')
+		return (1);
+	return (0);
 }
 
 int	ft_printf(const char *str, ...)
 {
-	va_list	arg;
-	int		i;
+	va_list	args;
 	int		len;
-	int tmp;
+	int		i;
+	int		tmp;
 
-	i = 0;
+	i = -1;
 	len = 0;
-	va_start(arg, str);
-	while (str[i])
+	va_start(args, str);
+	while (str[++i])
 	{
-		if (ft_flag_catch(str, i))
+		if (str[i] == '%' && ft_check(str[i + 1]))
 		{
-			tmp = ft_format(arg, str[++i]);
+			tmp = ft_format(&args, str[++i]);
 			if (tmp == -1)
 				return (-1);
-			len += tmp;
+			len += tmp - 1;
 		}
-		else
-		{
-			if(write(1, &str[i], 1) == -1)
-				return (-1);
-			len++;
-		}
-		i++;
+		else if (ft_putchar(str[i]) == -1)
+			return (-1);
+		len++;
 	}
-	va_end(arg);
+	va_end(args);
 	return (len);
 }
-/* #include <stdio.h>
-
-int main()
-{
-	int tmp = ft_printf("%%c");
-	ft_printf("%d",tmp);
-	tmp = printf("%%c");
-	printf("%d",tmp);
-	
-} */

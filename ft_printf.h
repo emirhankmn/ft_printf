@@ -5,30 +5,24 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: eakman <eakman@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/23 23:42:16 by eakman            #+#    #+#             */
-/*   Updated: 2023/07/25 01:31:02 by eakman           ###   ########.fr       */
+/*   Created: 2023/07/31 13:41:32 by eakman            #+#    #+#             */
+/*   Updated: 2023/07/31 13:42:09 by eakman           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
-
-# include <stdarg.h>
-# include <stdlib.h>
 # include <unistd.h>
-# include <stdbool.h>
+# include <stdarg.h>
 
-int		ft_string(char *str);
-int		ft_unsigned(unsigned int a);
-int		ft_unsigned(unsigned int a);
-int		ft_format(va_list arg, char c);
-int		ft_hex(unsigned int a, char b);
 int		ft_printf(const char *str, ...);
-int		ft_point(unsigned long ptr, int nbr);
-char	*ft_itoa(int n);
-int	ft_putstr(char *s);
-size_t	ft_strlen(const char *s);
-int		ft_int(int src);
-int		ft_putchar(char a);
+int		ft_putchar(char x);
+int		ft_format(va_list *args, char w);
+int		ft_int(int w);
+int		ft_unsigned(unsigned int w);
+int		ft_string(char *str);
+int		ft_hex(unsigned int d, char w);
+int		ft_point(unsigned long w, int i);
+int		ft_check(char str);
 
 #endif
