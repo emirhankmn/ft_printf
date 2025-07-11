@@ -1,0 +1,9 @@
+int	ft_printf(const char *format, ...) {
+	va_list args;
+	int     printed;
+
+	va_start(args, format);
+	printed = parse_and_print(format, args);
+	va_end(args);
+	return (printed);
+}
